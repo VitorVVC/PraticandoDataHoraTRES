@@ -33,7 +33,7 @@ public class Pessoa {
     }
 
     public void setDia(int dia) {
-        this.dia = dia;
+        this.dia = validarDia(dia,this.mes);
     }
 
     public int getMes() {
@@ -41,7 +41,7 @@ public class Pessoa {
     }
 
     public void setMes(int mes) {
-        this.mes = mes;
+        this.mes = validarMes(mes);
     }
 
     public int getAno() {
@@ -49,7 +49,7 @@ public class Pessoa {
     }
 
     public void setAno(int ano) {
-        this.ano = ano;
+        this.ano = validarInt(ano);
     }
 
 
