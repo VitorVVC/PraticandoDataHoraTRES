@@ -14,13 +14,13 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         // Interface teste do progama automatica: \\
-        /*saudacao();
+        saudacaoInterativa("Vitor");
+        saudacao();
         printHora();
         LocalDate nascimento = LocalDate.of(2005, 4, 19);
         infoPessoa("Vitor", 19, 4, 2005);
         printPessoaIdade("Vitor", nascimento);
-        Instant instant = Instant.now();
-        horaEm("Mexico", "America/Mexico_City", instant);
+        horaEm("Mexico", "America/Mexico_City");
 
         try {
             validarDia(19, 4);
@@ -31,11 +31,12 @@ public class Main {
             //validarInt(-9);
         } catch (IllegalArgumentException exception) {
             System.out.println("ERROR: " + exception.getMessage());
-        }finally {
+        } finally {
             System.out.println("Try Finalizado com sucesso.");
-        }*/
+        }
 
         // Interface teste INTERATIVA \\
+        /*
         printHora();
         String name = obterNome(sc);
         saudacaoInterativa(name);
@@ -71,12 +72,13 @@ public class Main {
             System.out.print("Escreva o timezone desta região: (Ex: America/Mexico_City) ");
             String timezone = sc.next();
             System.out.println("Processo realizado com sucesso !");
-            horaEm(local, timezone, instant);
+            horaEm(local, timezone);
 
             System.out.print("Deseja realizar o processo novamente? S para sim e N para não: ");
             yon = sc.next().charAt(0);
         }
         System.out.println("Progama encerrado");
+        */
     }
 
     // Funcão que printa a hora em algum local com algum timeZone no momento de agora
@@ -86,6 +88,7 @@ public class Main {
         ZonedDateTime zonedDateTime = instant1.atZone(ZoneId.of(timezone));
         System.out.printf("Location: %s %s%n", local, formatter.format(zonedDateTime));
     }
+
     // Processo para saber qual signo de uma pessoa
     private static void signo(int dia, int mes) {
         try {
@@ -122,9 +125,9 @@ public class Main {
     // Pede informacões da pessoa para que possa printa-las
     public static void infoPessoa(String nome, int dia, int mes, int ano) {
         // Valida as entradas e se houver um erro ele retorna øque houve
-            validarDia(dia, mes);
-            validarMes(mes);
-            validarInt(ano);
+        validarDia(dia, mes);
+        validarMes(mes);
+        validarInt(ano);
         // Caso sejam aceitas o programa segue printando
         System.out.println("Informacão do(a): " + nome);
         System.out.printf("Dia de nascimento: %02d%n", dia);
@@ -143,31 +146,61 @@ public class Main {
         System.out.println(nome + " tem " + idade.getYears() + " anos ");
     }
 
+    // Método que printa uma saudacão referente a hora do local
     public static void saudacao() {
-        int hora = LocalDateTime.now().getHour();
-        if (hora >= 6 && hora < 12) {
+        // Obtém o instante atual
+        Instant instant = Instant.now();
+        // Converte o instante para a zona de tempo do sistema do computador
+        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+        // Obtém a hora local a partir do ZonedDateTime
+        LocalTime hora = zdt.toLocalTime();
+        // Verifica se a hora está entre 6:00 e 12:00
+        if (hora.isAfter(LocalTime.of(6, 0)) && hora.isBefore(LocalTime.of(12, 0))) {
             System.out.println("Bom Dia!");
-        } else if (hora >= 12 && hora < 18) {
+        }
+        // Verifica se a hora está entre 12:00 e 18:00
+        else if (hora.isAfter(LocalTime.of(12, 0)) && hora.isBefore(LocalTime.of(18, 0))) {
             System.out.println("Boa Tarde!");
-        } else {
+        }
+        // Se nenhuma das condições acima for verdadeira, imprime "Boa noite"
+        else {
             System.out.println("Boa noite ");
         }
     }
 
+    // Saudacão interativa , referente ao nome da pessoa + a funcão acima
     public static void saudacaoInterativa(String nome) {
-        int hora = LocalDateTime.now().getHour();
-        if (hora >= 6 && hora < 12) {
-            System.out.printf("Bom Dia %s !%n", nome);
-        } else if (hora >= 12 && hora < 18) {
-            System.out.printf("Boa Tarde %s !%n", nome);
-        } else {
-            System.out.printf("Boa Noite %s ! %n", nome);
+        // Obtém o instante atual
+        Instant instant = Instant.now();
+        // Converte o instante para a zona de tempo do sistema do computador
+        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+        // Obtém a hora local a partir do ZonedDateTime
+        LocalTime hora = zdt.toLocalTime();
+        // Verifica se a hora está entre 6:00 e 12:00
+        if (hora.isAfter(LocalTime.of(6, 0)) && hora.isBefore(LocalTime.of(12, 0))) {
+            System.out.printf("Bom Dia %s!%n", nome);
+        }
+        // Verifica se a hora está entre 12:00 e 18:00
+        else if (hora.isAfter(LocalTime.of(12, 0)) && hora.isBefore(LocalTime.of(18, 0))) {
+            System.out.printf("Boa Tarde %s!%n", nome);
+        }
+        // Se nenhuma das condições acima for verdadeira, imprime "Boa noite"
+        else {
+            System.out.printf("Boa noite %s!%n", nome);
         }
     }
 
+    // Print da hora local
     public static void printHora() {
-        LocalDateTime now = LocalDateTime.now();
+        // Obtém o instante atual
+        Instant instant = Instant.now();
+        // Converte o instante para zona de tempo do sistema do computador
+        ZonedDateTime zdt = instant.atZone(ZoneId.systemDefault());
+        // Obtém a hora local a partir do ZonedDateTime
+        LocalDateTime now = zdt.toLocalDateTime();
+        // Formatacão para printar ( Exemplo: Data: 18/10/2023 & Hora: 16:53:09 )
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("'Data: 'dd/MM/yyyy '& Hora:' HH:mm:ss");
+        // Print da formatacão passando now como argumento, para formatar a hora e data conforme feito no formatter
         System.out.println(formatter.format(now));
         //System.out.println("Dia: " + now.getDayOfMonth());
         //System.out.println("Mes: " + now.getMonthValue());
@@ -177,43 +210,59 @@ public class Main {
         //System.out.println("Seconds: " + now.getSecond());
     }
 
+    // Usado como método para proibir uma integracão de numero negativos no sistema
     public static void validarInt(int valor) {
         if (valor <= 0) {
             throw new IllegalArgumentException("Não aceitamos numeros negativos.");
         }
     }
 
-
+    // Usado como método para validar o mes para limitar uma integracão com meses não existentes
     public static void validarMes(int mes) {
         if (mes < 0 || mes > 12) {
             throw new IllegalArgumentException("Não aceitamos numeros abaixo de zero ou acima de 12.");
         }
     }
 
+    // Método que vai pedir um dia como entrada e mes, referente ao mes ele irá conferir se o dia pode exisitir em tal mes
     public static void validarDia(int dia, int mes) {
+        // Valida o mes
         validarMes(mes);
+        // Atribui a um int o mes do ano do LocalDate HOJE, get no ano e mes para puxar o tamanho do mes
         int maxDias = YearMonth.of(LocalDate.now().getYear(), mes).lengthOfMonth();
+        // Se o dia for menor que 1 ou maior que a quantidade de dias no mes ele retorna um erro
         if (dia < 1 || dia > maxDias) {
             throw new IllegalArgumentException("So aceitamos valores o primeiro e ultimo dia do mes. ");
         }
     }
 
+    // Método para obterDados de uma pessoa , recebendo como parametro um Scanner
+    // Para assim receber um dado e o armazena-lo
     public static Pessoa obterDadosPessoa(Scanner sc) {
+        // Método para obter o nome de quem comandará o sistema, porém reaproveitado para obter um nome neste método também
         String name = obterNome(sc);
+        // Método que receberá o dia do nascimento e salvara em um inteiro
         System.out.print("Qual o dia de seu nascimento?(Ex: 19) ");
         int dia = sc.nextInt();
+        // Método que receberá o mes do nascimento e salvara em um inteiro
         System.out.print("Qual o mês de seu nascimento?(Ex: 5) ");
         int mes = sc.nextInt();
+        // Método que receberá o ano do nascimento e salvara em um inteiro
         System.out.print("Qual o ano de seu nascimento?(Ex: 2003) ");
         int ano = sc.nextInt();
+        // Após isso cria uma pessoa com todos os atributos antes armazenados
         return new Pessoa(name, dia, mes, ano);
     }
 
+    // Obtem um nome, criei-o para simplificar o processo de criar um "Mandante" para o progama
+    // Recebe um scanner como parametro
     public static String obterNome(Scanner sc) {
         System.out.print("Olá , por favor forneca-me seu primeiro nome: ");
         return sc.next();
     }
 
+    // Obtem a quantidade de pessoas, passando como parametro um scanner
+    // Serve papra armazenar quantas pessoas serão adicionadas ao sistema
     public static int obterQuantidadePessoas(Scanner sc) {
         System.out.print("Forneca quantas pessoas voce gostaria de acrescentar ao sistema: ");
         return sc.nextInt();
